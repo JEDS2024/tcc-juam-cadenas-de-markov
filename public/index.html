@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulaciones Realistas con Cadenas de Markov</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col items-center p-4">
+    <div class="container mx-auto bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-4xl">
+        <h1 class="text-4xl font-bold text-center text-blue-400 mb-8">Simulaciones Realistas con Cadenas de Markov</h1>
+
+        <div class="mb-6">
+            <h2 class="text-2xl font-semibold text-blue-300 mb-4">Definir Variables de Simulación:</h2>
+            <div class="flex flex-col md:flex-row gap-4 mb-4">
+                <input type="text" id="variableName" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-100 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 border-gray-600" placeholder="Nombre de la variable (ej: 'Éxito', 'Fallo')">
+                <input type="number" id="variablePercentage" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-100 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 border-gray-600" placeholder="Porcentaje (0-100)" min="0" max="100">
+                <button id="addVariableBtn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex-shrink-0">
+                    Añadir Variable
+                </button>
+            </div>
+            <div id="variableList" class="bg-gray-700 p-4 rounded min-h-[100px] max-h-[200px] overflow-y-auto">
+                <p class="text-gray-400">No hay variables añadidas aún.</p>
+            </div>
+        </div>
+
+        <div class="mb-6">
+            <label for="simulationDuration" class="block text-gray-300 text-sm font-bold mb-2">Duración de la Simulación Automática (segundos, dejar en blanco para infinito):</label>
+            <input type="number" id="simulationDuration" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-100 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 border-gray-600 mb-4" placeholder="Ej: 60" min="1">
+            <div class="flex flex-wrap justify-center gap-2 mb-8">
+                <button id="startAutoBtn" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex-grow">Simulación Automática</button>
+                <button id="stepBtn" class="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex-grow">Paso a Paso</button>
+                <button id="stopBtn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex-grow" disabled>Detener Simulación</button>
+            </div>
+        </div>
+
+        <div class="mb-6 flex flex-wrap gap-4 items-center">
+            <label class="text-gray-300 text-sm font-bold">Tipo de Gráfico:</label>
+            <select id="chartTypeSelector" class="shadow appearance-none border rounded py-2 px-3 text-gray-100 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 border-gray-600">
+                <option value="line">Líneas</option>
+                <option value="bar">Barras (Impacto Acumulado)</option>
+            </select>
+            <label class="text-gray-300 text-sm font-bold">
+                <input type="checkbox" id="normalizeImpacts" class="mr-2 leading-tight">
+                Normalizar Impactos (0-100%)
+            </label>
+        </div>
+
+        <div class="mb-8">
+            <h2 class="text-2xl font-semibold text-blue-300 mb-4">Variable Ganadora Actual:</h2>
+            <p id="currentWinner" class="bg-gray-700 p-4 rounded text-gray-200 italic text-center text-xl font-bold">Esperando simulación...</p>
+        </div>
+
+        <div class="mb-8">
+            <h2 class="text-2xl font-semibold text-blue-300 mb-4">Texto de Simulación Generado:</h2>
+            <p id="generatedText" class="bg-gray-700 p-4 rounded text-gray-200 italic"></p>
+        </div>
+
+        <div>
+            <h2 class="text-2xl font-semibold text-blue-300 mb-4">Gráfico de Simulación (Datos de Ejemplo):</h2>
+            <div class="bg-gray-700 p-4 rounded mb-4">
+                <canvas id="simulationChart"></canvas>
+            </div>
+            <div id="comparisonStats" class="bg-gray-800 p-4 rounded"></div>
+        </div>
+    </div>
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Chart.js Zoom Plugin CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
+    <!-- Custom Script -->
+    <script src="script.js"></script>
+</body>
+</html>
